@@ -6,8 +6,8 @@ const checkTokenAndHeaders = () => {
         Accept: "application/json",
     };
     let userLoggedToken = JSON.parse(localStorage.getItem("persist:root"));
-
-    userLoggedToken = JSON.parse(userLoggedToken.token);
+    console.log("from api index", userLoggedToken);
+    // userLoggedToken = JSON.parse(userLoggedToken.token);
     if (userLoggedToken) {
         configHeaders["Authorization"] = `Bearer ${userLoggedToken}`;
     }
@@ -26,10 +26,15 @@ const adminHeaders = () => {
 
 
 const apiService = {
+
     async createUser(payload) {
         return await Axios.post("/users/create", payload);
     },
-
+    async userLogin(payload) {
+        return await Axios.post("/users/userLogin", payload, {
+            headers: checkTokenAndHeaders(),
+        });
+    },
 };
 
 export default apiService;

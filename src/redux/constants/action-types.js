@@ -1,0 +1,8 @@
+export const ActionTypes = {
+    SET_USER: "SET_USER",
+    GET_USER: "GET_USER",
+    REMOVE_USER: "REMOVE_USER",
+    SET_TOKEN: "SET_TOKEN",
+    GET_TOKEN: "GET_TOKEN",
+    REMOVE_TOKEN: "REMOVE_TOKEN",
+};

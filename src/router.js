@@ -12,6 +12,7 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+import Services from "./components/Services";
 
 
 
@@ -26,6 +27,7 @@ function router() {
                     <Route exact path="/contact" element={<Contact />} />
                     <Route exact path="/register" element={<Register />} />
                     <Route exact path="/login" element={<Login />} />
+                    <Route exact path="/services" element={<Services />} />
                 </Routes>
             </Router>
         </div>

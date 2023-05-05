@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GoogleMapImg from '../assets/google-map.jpeg';
+import { useNavigate } from 'react-router-dom';
 
 
 const Contact = () => {
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate("/contact")
+        }
+        else {
+            navigate("/login");
+        }
+        // eslint-disable-next-line
+    }, []);
+
+
     return (
         <div className='container'>
             <h1 style={{ padding: '5%', marginLeft: '480px' }}><b>Contact Us</b></h1>
@@ -44,6 +58,8 @@ const Contact = () => {
                                 <input type="text" id="fname" name="firstname" placeholder="Your first name.." style={{ padding: '12px', paddingRight: '384%', border: '1px solid #00000059', borderRadius: '5px' }} />
                                 <label htmlFor="lname" style={{ margin: '10px 0' }}>Last Name:</label>
                                 <input type="text" id="lname" name="lastname" placeholder="Your last name.." style={{ padding: '12px', paddingRight: '384%', border: '1px solid #00000059', borderRadius: '5px' }} />
+                                <label htmlFor="email" style={{ margin: '10px 0' }}>Email:</label>
+                                <input type="email" id="email" name="email" placeholder="Your email id.." style={{ padding: '12px', paddingRight: '384%', border: '1px solid #00000059', borderRadius: '5px' }} />
                                 <label htmlFor="country" style={{ margin: '10px 0' }}>Country:</label>
                                 <select id="country" name="country" style={{ padding: '14px', paddingRight: '485%', border: '1px solid #00000059', borderRadius: '5px' }}>
                                     <option value="australia">India</option>

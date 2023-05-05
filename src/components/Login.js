@@ -12,6 +12,14 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import apiService from '../api/index';
+import { setUser } from "../redux/actions/userActions";
+import { setToken } from "../redux/actions/tokenActions";
 
 
 function Copyright(props) {
@@ -27,18 +35,55 @@ function Copyright(props) {
     );
 }
 
+
 const theme = createTheme();
 
 export default function SignInSide() {
+    // const [credentials, setcredentials] = useState({ email: "", password: "" });
+    const MySwal = withReactContent(Swal);
+    let navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        // console.log(event);
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const email = data.get('email');
+        const password = data.get('password');
+
+
+        if (email === "" || password === "") {
+            return MySwal.fire({
+                title: <strong>Error!</strong>,
+                html: <p>Please insert valid email or password</p>,
+                icon: "error",
+            });
+        }
+
+        try {
+            const response = await apiService.userLogin({
+                email: email,
+                password: password,
+            });
+
+            localStorage.setItem('token', response.data.authToken);
+
+            await dispatch(setToken(response.data.authToken));
+            await dispatch(setUser(response.data.user));
+
+
+            navigate("/contact");
+        } catch (error) {
+            console.log("eroor", error);
+            return MySwal.fire({
+                title: <strong>Error!</strong>,
+                html: <p>{error.response.data.message}</p>,
+                icon: "error",
+            });
+        }
     };
+
+
 
     return (
         <ThemeProvider theme={theme}>
