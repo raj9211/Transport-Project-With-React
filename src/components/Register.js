@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Autocomplete from '@mui/material/Autocomplete';
 // import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,6 +21,8 @@ import withReactContent from "sweetalert2-react-content";
 import apiService from '../api/index';
 import { setUser } from "../redux/actions/userActions";
 import { setToken } from "../redux/actions/tokenActions";
+import countries from "../utils/country";
+
 
 
 function Copyright(props) {
@@ -46,13 +49,13 @@ export default function SignInSide() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // console.log(event);
+        console.log(event);
         const data = new FormData(event.currentTarget);
         const name = data.get('name');
         const email = data.get('email');
         const password = data.get('password');
         const phone = data.get('phone');
-        const country = data.get('country');
+        const country = data.get('country-select-demo');
 
 
         if (email === "" || password === "") {
@@ -62,6 +65,8 @@ export default function SignInSide() {
                 icon: "error",
             });
         }
+
+        console.log(country);
 
         try {
             const response = await apiService.createUser({
@@ -88,7 +93,6 @@ export default function SignInSide() {
             });
         }
     };
-
 
 
     return (
@@ -166,16 +170,36 @@ export default function SignInSide() {
                                 autoComplete="phone"
                                 autoFocus
                             />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="country"
-                                label="Country"
-                                name="country"
-                                autoComplete="country"
-                                autoFocus
+                            <Autocomplete
+                                id="country-select-demo"
+                                sx={{ width: 300 }}
+                                options={countries}
+                                autoHighlight
+                                getOptionLabel={(option) => option.label}
+                                renderOption={(props, option) => (
+                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                        <img
+                                            loading="lazy"
+                                            width="20"
+                                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                            alt=""
+                                        />
+                                        {option.label} ({option.code}) +{option.phone}
+                                    </Box>
+                                )}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Choose a country"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                        }}
+                                    />
+                                )}
                             />
+
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
