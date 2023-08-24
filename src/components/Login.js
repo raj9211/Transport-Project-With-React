@@ -72,7 +72,7 @@ export default function SignInSide() {
             await dispatch(setUser(response.data.user));
 
 
-            navigate("/contact");
+            navigate("/vehicle");
         } catch (error) {
             console.log("eroor", error);
             return MySwal.fire({

@@ -28,6 +28,9 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link text-white" to="/contact">Contact Us</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link text-white" to="/vehicle">Add Vehicle</Link>
+                        </li>
                         {!localStorage.getItem('token') ? <form className="d-flex" role="search">
                             <li className="nav-item">
                                 <Link className="nav-link text-white" to="/register" >Register</Link>

@@ -1,21 +1,8 @@
 import React, { useEffect } from 'react';
 import GoogleMapImg from '../assets/google-map.jpeg';
-import { useNavigate } from 'react-router-dom';
 
 
 const Contact = () => {
-    let navigate = useNavigate();
-
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            navigate("/contact")
-        }
-        else {
-            navigate("/login");
-        }
-        // eslint-disable-next-line
-    }, []);
-
 
     return (
         <div className='container'>
@@ -35,8 +22,8 @@ const Contact = () => {
                         <div className="Contact">
                             <h6><i className="fas fa-phone-alt"></i><b>Contact us</b></h6>
                             <p style={{ margin: '3% 15%' }}>(033) 56568989<br />
-                                Admin@EasyVahan.com<br />
-                                www.EasyVahan.com</p>
+                                Admin@XYZ.com<br />
+                                www.XYZ.com</p>
                         </div>
                         <div className="social-media">
                             <h6><i className="fas fa-hashtag"></i><b>Social media</b></h6>

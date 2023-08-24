@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,12 +16,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 // import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import apiService from '../api/index';
-import { setUser } from "../redux/actions/userActions";
-import { setToken } from "../redux/actions/tokenActions";
+// import { setUser } from "../redux/actions/userActions";
+// import { setToken } from "../redux/actions/tokenActions";
 import countries from "../utils/country";
 
 
@@ -42,20 +43,22 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-    // const [credentials, setcredentials] = useState({ email: "", password: "" });
+    const [credentials, setcredentials] = useState({ name: "", email: "", password: "", phone: "", country: "" });
     const MySwal = withReactContent(Swal);
     let navigate = useNavigate();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        console.log(event);
-        const data = new FormData(event.currentTarget);
-        const name = data.get('name');
-        const email = data.get('email');
-        const password = data.get('password');
-        const phone = data.get('phone');
-        const country = data.get('country-select-demo');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // console.log(event);
+        // const data = new FormData(event.currentTarget);
+        // const name = data.get('name');
+        // const email = data.get('email');
+        // const password = data.get('password');
+        // const phone = data.get('phone');
+        // const country = data.get('country-select-demo');
+
+        const { name, email, password, phone, country } = credentials;
 
 
         if (email === "" || password === "") {
@@ -66,7 +69,6 @@ export default function SignInSide() {
             });
         }
 
-        console.log(country);
 
         try {
             const response = await apiService.createUser({
@@ -78,12 +80,7 @@ export default function SignInSide() {
             });
 
             localStorage.setItem('token', response.data.authToken);
-
-            await dispatch(setToken(response.data.authToken));
-            await dispatch(setUser(response.data.user));
-
-
-            navigate("/about");
+            navigate("/vehicle");
         } catch (error) {
             // console.log("eroor", error);
             return MySwal.fire({
@@ -94,6 +91,9 @@ export default function SignInSide() {
         }
     };
 
+    const onChange = (e) => {
+        setcredentials({ ...credentials, [e.target.name]: e.target.value })
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -135,6 +135,7 @@ export default function SignInSide() {
                                 required
                                 fullWidth
                                 id="name"
+                                onChange={onChange}
                                 label="Full Name"
                                 name="name"
                                 autoComplete="name"
@@ -145,6 +146,7 @@ export default function SignInSide() {
                                 required
                                 fullWidth
                                 id="email"
+                                onChange={onChange}
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
@@ -158,6 +160,7 @@ export default function SignInSide() {
                                 label="Password"
                                 type="password"
                                 id="password"
+                                onChange={onChange}
                                 autoComplete="current-password"
                             />
                             <TextField
@@ -165,13 +168,15 @@ export default function SignInSide() {
                                 required
                                 fullWidth
                                 id="phone"
+                                onChange={onChange}
                                 label="Phone Number"
                                 name="phone"
                                 autoComplete="phone"
                                 autoFocus
                             />
                             <Autocomplete
-                                id="country-select-demo"
+                                id="country"
+                                onChange={onChange}
                                 sx={{ width: 300 }}
                                 options={countries}
                                 autoHighlight
@@ -191,7 +196,7 @@ export default function SignInSide() {
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        label="Choose a country"
+                                        label="Choose a Country"
                                         inputProps={{
                                             ...params.inputProps,
                                             autoComplete: 'new-password', // disable autocomplete and autofill
